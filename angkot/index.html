@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>angkot 1 info</h1>
+    <div id="angkotInfo"></div>
+
+    <h2>tambah penumpang</h2>
+    
+    <form id="addPassengerForm">
+        <label for="passengerName">Nama Penumpang:</label>
+        <input type="text" id="passengerName" required>
+        <button type="button" onclick="addPassenger()">Tambah Penumpang</button>
+    </form><br>
+    
+    <h2>usir penumpang</h2>
+
+    <form id="ejectPassenger">
+        <label for="passengerName">Nama Penumpang:</label>
+        <input type="text" id="passengerName" required><br>
+        <label for="passengerBills">Biaya:</label>
+        <input type="number" name="passengerBills" id="passengerBills" required><br>
+        <button type="button" onclick="ejectPassenger()">Turun Penumpang</button>
+    </form>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>

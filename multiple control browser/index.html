@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Control Browser</title>
+    <style>
+    #circle {
+        position: fixed;
+        /* background-color: aqua; */
+        border-radius: 50%;
+    }
+    #circle img {
+        width: 100px;
+        height: 100px;
+    }
+    </style>
+</head>
+<body>
+    <h1>Website Control</h1>
+    <div id="circle"><img src="emotbatu.jpg" alt="emot batu"></div>
+    
+    <script>
+        const circleChannel = new BroadcastChannel("circle_channel");
+        const circle = document.getElementById("circle");
+
+        function circleMovement (event) {
+            const x = event.clientX, y = event.clientY;
+            // console.log({x, y});
+            circle.style.top = y + "px";
+            circle.style.left = x + "px";
+            circle.style.right = "";
+
+            circleChannel.postMessage( { x, y } );
+        }
+
+        circleChannel.onmessage = (event) => {
+            const {x, y} = event.data;
+
+            circle.style.top = y + "px";
+            circle.style.left = "";
+            circle.style.right = x + "px";
+        }
+
+        addEventListener("mousemove", circleMovement)
+
+    </script>
+</body>
+</html>
