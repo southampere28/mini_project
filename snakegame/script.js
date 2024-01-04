@@ -1,5 +1,6 @@
 const playBoard = document.querySelector(".play-board");
 const scoreElement = document.querySelector(".score");
+const highScoreElement = document.querySelector(".high-score");
 
 let foodX,foodY;
 let snakeX = 5, snakeY = 10;
@@ -7,6 +8,12 @@ let snakeBody = [];
 let velocityX = 0, velocityY = 0;
 let heading = "";
 let score = 0;
+
+let highScore = localStorage.getItem("high-score") || 0;
+highScoreElement.innerText = `High Score: ${highScore}`;
+
+let gameOver = false;
+let setIntervalId;
 
 const changeFoodPosition = () => {
     foodX = Math.floor(Math.random() * 30) + 1;
@@ -36,11 +43,20 @@ const changeDirection = (e) => {
         heading = "left";
     } 
     initGame();
-    // velocityX = 0;
-    // velocityY = 0;
+}
+
+const handlerGameOver = () => {
+    clearInterval(setIntervalId);
+    alert("u got lost :(");
+    location.reload();
 }
 
 const initGame = () => {
+
+    if (gameOver) {
+        return handlerGameOver();
+    }
+
     let htmlMarkup = `<div class="food" style="grid-area:${foodY}/${foodX}"></div>`;
     
     snakeX += velocityX;
@@ -60,8 +76,13 @@ const initGame = () => {
         changeFoodPosition();
         snakeBody.push([foodX, foodY]);
         // console.log(snakeBody);
-        score += 1;
-        scoreElement.innerText = "Score: " + score;
+        score++;
+        // highScore++;
+
+        highScore = score >= highScore ? score : highScore;
+        scoreElement.innerText = `Score:  ${score}`;
+        localStorage.setItem("high-score", highScore);
+        highScoreElement.innerText = `High Score: ${highScore}`;
     }
     
     for (let i = snakeBody.length - 1; i > 0; i--) {
@@ -74,9 +95,13 @@ const initGame = () => {
     for (let i = 0; i < snakeBody.length; i++) {
 
         htmlMarkup += `<div class="headsnake" style="grid-area:${snakeBody[i][1]}/${snakeBody[i][0]}"></div>`;
+
+        if (i !== 0 && snakeBody[0][1] === snakeBody[i][1] && snakeBody[0][0] === snakeBody[i][0]) {
+            gameOver = true;
+        }
     }
     playBoard.innerHTML = htmlMarkup;
 }
 changeFoodPosition();
-setInterval(initGame, 125);
+setIntervalId = setInterval(initGame, 125);
 document.addEventListener("keydown", changeDirection);
