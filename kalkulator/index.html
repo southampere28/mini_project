@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <form autocomplete="off">
+                <div class="calculator__keys">
+                    <div class="display">
+                        <input type="text" name="display">
+                    </div>
+                    <div>
+                        <input type="button" value="AC">
+                        <input type="button" value="DE">
+                        <input type="button" value=".">
+                        <input class="key--op" data-action="divide" type="button" value="/">
+                    </div>
+                    <div>
+                        <input type="button" value="7">
+                        <input type="button" value="8">
+                        <input type="button" value="9">
+                        <input class="key--op" data-action="multiply" type="button" value="*">
+                    </div>
+                    <div>
+                        <input type="button" value="4">
+                        <input type="button" value="5">
+                        <input type="button" value="6">
+                        <input class="key--op" data-action="substract" type="button" value="-">
+                    </div>
+                    <div>
+                        <input type="button" value="1">
+                        <input type="button" value="2">
+                        <input type="button" value="3">
+                        <input class="key--op" data-action="add" type="button" value="+">
+                    </div>
+                    <div>
+                        <input type="button" value="0">
+                        <input type="button" value="00">
+                        <input class="equals" type="button" data-action="calculate" value="=">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        const calculator = document.querySelector('.calculator');
+        const keys = calculator.querySelector('.calculator__keys');
+
+        const vals = calculator.querySelector('.display');
+
+        keys.addEventListener('click', e => {
+            if (e.target.tagName === 'INPUT' && e.target.classList.contains('key--op')) {
+                console.log("Clicked on the divide button");
+            }
+            
+            else if (e.target.tagName === 'INPUT' && e.target.type != 'text'){
+                const numb = e.target.value;
+                console.log("this is button number");
+                console.log(`thats ur fkin number => ${numb}`);
+                vals.innerText += numb;
+            }
+            // console.log(e);
+        });
+
+        const penjumlahan = () => {
+            console.log("fuck");
+        }
+    </script>
+</body>
+</html>
