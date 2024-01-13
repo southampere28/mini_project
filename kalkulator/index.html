@@ -12,12 +12,12 @@
             <form autocomplete="off">
                 <div class="calculator__keys">
                     <div class="display">
-                        <input type="text" name="display">
+                        <input type="text" name="display" value="0">
                     </div>
                     <div>
-                        <input type="button" value="AC">
-                        <input type="button" value="DE">
-                        <input type="button" value=".">
+                        <input type="button" data-action="clear" value="AC">
+                        <input type="button" data-action="del" value="DE">
+                        <input type="button" data-action="decimal" value=".">
                         <input class="key--op" data-action="divide" type="button" value="/">
                     </div>
                     <div>
@@ -54,23 +54,94 @@
         const keys = calculator.querySelector('.calculator__keys');
 
         const vals = calculator.querySelector('.display');
-
+        const displayInput = vals.querySelector('input[name="display"]');
+        
         keys.addEventListener('click', e => {
-            if (e.target.tagName === 'INPUT' && e.target.classList.contains('key--op')) {
-                console.log("Clicked on the divide button");
+
+            // identify data-action is available or not
+            const keyy = e.target;
+            const action = keyy.dataset.action;
+
+
+            if (e.target.tagName === 'INPUT' && action) {
+                // all data-set
+                const values = e.target.value;
+                const displayValue = displayInput.value;
+
+                if (e.target.classList.contains('key--op')) {
+                    // console.log(`value => ${values}`);
+                    if (action === 'add' || action === 'substract' || action === 'multiply' || action === 'divide') {
+                        keyy.classList.add('is-depressed'); 
+                        // add custom attribute
+                        calculator.dataset.previousKeyType = 'operator';
+                        
+                        calculator.dataset.firstValue = displayValue;
+                        calculator.dataset.operator = action;
+                    }
+
+                } else {
+                    if (action === 'decimal') {
+                        // console.log("decimal key");
+                        displayInput.value = displayValue + values;
+                    }
+                    if (action === 'clear') {
+                        console.log('clear key');
+                    }
+                    if (action === 'calculate') {
+
+                        const secondValue = displayValue;
+                        const firstValue = calculator.dataset.firstValue;
+                        const operator = calculator.dataset.operator;
+                        // ...
+                        // calculate (n1, operator, n2)
+                        displayInput.value = calculate(firstValue, operator, secondValue);
+                    
+                    }
+                }
+
+            } else if (e.target.tagName === 'INPUT' && !action) {
+                // get number button
+
+                const valuesnum = e.target.value;
+                const displayValue = displayInput.value;
+                const keyy = e.target;
+
+                if (e.target.type == 'button') {
+                    
+                    const operatorButtons = calculator.querySelectorAll('.calculator__keys input.key--op');
+                    
+                    operatorButtons.forEach(function(operatorButton) {
+                        operatorButton.classList.remove('is-depressed');
+                    });
+
+                    if (displayValue === '0' || calculator.dataset.previousKeyType === 'operator') {
+                        displayInput.value = valuesnum;
+                        calculator.dataset.previousKeyType = '1';
+                    } else {
+                        displayInput.value = displayValue + valuesnum;
+                    }
+
+                }
+
             }
-            
-            else if (e.target.tagName === 'INPUT' && e.target.type != 'text'){
-                const numb = e.target.value;
-                console.log("this is button number");
-                console.log(`thats ur fkin number => ${numb}`);
-                vals.innerText += numb;
-            }
-            // console.log(e);
+
         });
 
-        const penjumlahan = () => {
-            console.log("fuck");
+        const calculate = (n1, operator, n2) => {
+            if (operator === 'add') {
+                result = parseFloat(n1) + parseFloat(n2);
+            } 
+            else if (operator === 'substract') {
+                result = parseFloat(n1) - parseFloat(n2);
+            }
+            else if (operator === 'multiply') {
+                result = parseFloat(n1) * parseFloat(n2);
+            }
+            else if (operator === 'divide') {
+                result = parseFloat(n1) / parseFloat(n2);
+            }
+
+            return result;
         }
     </script>
 </body>
