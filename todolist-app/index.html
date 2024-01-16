@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Apps</title>
+    <style>
+        .done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <h1>To Do List Apps</h1>
+    <h3>what needs to be done?</h3>
+    
+    <form action="#" autocomplete="off">
+        <input type="text" id="newtext">
+        <button onclick="add()">add</button>
+    </form>
+
+    <ul id="todo">
+    </ul>
+    
+    <script>
+        
+        const todo = document.getElementById('todo');
+        let todoDatas = [];
+        
+        todo.style.cursor = "pointer";
+        
+        function add() {
+
+            //1. ambil nilai dari textnya
+            const newText = document.getElementById('newtext');
+
+            todoDatas.unshift(newText.value);
+
+            
+            //2. tambahkan list
+            
+            update(newText.value);
+            newText.value = "";
+        }
+
+        const update = (newText) => {
+            
+            let newTodo = "<li> <span onclick='toggle(this)'>" + newText + "</span>" + 
+                "<span onclick='listdelete(this)'>  [x]</span></li>";
+
+            todo.insertAdjacentHTML('beforeend', newTodo);
+            saveData();
+        }
+
+        const toggle = (el) => {
+            el.classList.toggle('done');
+            saveData();
+        } 
+        
+        const listdelete = (el) => {
+            el.parentElement.remove();
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('mydatas', todo.innerHTML);
+        }
+        function showTask() {
+            todo.innerHTML = localStorage.getItem('mydatas');
+        }
+
+        showTask();
+
+    </script>
+</body>
+</html>
